@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { database } from "./firebase";
-import { ref, push, onValue, set, remove, update } from "firebase/database";
+import {
+  ref,
+  push,
+  onValue,
+  set,
+  remove,
+  update,
+  child,
+  get,
+} from "firebase/database";
 import {
   Grid,
   Typography,
@@ -151,24 +160,20 @@ const MenuManager = () => {
   };
 
   const deleteItem = () => {
-    if (!selectedItem.id) {
-      console.error("Invalid itemId");
-      return;
-    }
-
-    const itemRef = ref(database, `menuItems/${selectedItem.id}`);
+    const itemKey = returnItemKey("menuItems", selectedItem.id);
+    const itemRefPath = `menuItems/${itemKey}`;
+    const itemRef = ref(database, itemRefPath);
 
     remove(itemRef)
       .then(() => {
         console.log("Menu item deleted successfully");
+        setCreateEditMode("create");
+        setSelectedItemId("");
+        setSelectedItem({});
       })
       .catch((error) => {
         console.error("Error deleting menu item:", error);
       });
-
-    setCreateEditMode("create");
-    setSelectedItemId("");
-    setSelectedItem({});
   };
 
   const updateItem = () => {
@@ -176,30 +181,36 @@ const MenuManager = () => {
       console.error("No valid item selected for update");
       return;
     }
-    const { id, ...updatedData } = Object.assign({}, selectedItem); // Remove id from updatedData
-    const itemRef = ref(database, `menuItems/${selectedItem.id}`);
-    console.log("itemRef", itemRef);
-    console.log("itemRef", updatedData);
-    update(itemRef, updatedData)
+
+    const itemKey = returnItemKey("menuItems", selectedItem.id);
+    const itemRefPath = `menuItems/${itemKey}`;
+    const itemRef = ref(database, itemRefPath);
+
+    update(itemRef, selectedItem)
       .then(() => {
         console.log("Menu item updated successfully");
-        setSelectedItemId("");
-        setNewItem({
-          id: "",
-          name: "",
-          category: {
-            id: "",
-            name: "",
-          },
-          price: "",
-          cost: "",
-          stock: "",
-          options: [],
-          hasOptions: false,
-        });
-        setHasOptions(false);
+        setSelectedItem(""); // Resetting selectedItem state after update
+        setDrawerOpen(false); // Closing drawer or modal after update
       })
-      .catch((error) => console.error("Error updating menu item:", error));
+      .catch((error) => {
+        console.error("Error updating menu item:", error);
+      });
+  };
+
+  const returnItemKey = (table, id) => {
+    const tableRef = ref(database, table);
+    let itemKey;
+
+    //get item
+    onValue(tableRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        itemKey = Object.keys(data).find((key) => data[key].id === id);
+      } else {
+      }
+    });
+
+    return itemKey;
   };
 
   const toggleEditMode = (itemId) => {
