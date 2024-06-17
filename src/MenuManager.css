@@ -138,3 +138,10 @@ button#addItem {
 .update-item-header {
   display: flex;
 }
+
+.error-message {
+  color: #9f0101;
+  text-align: left;
+  font-size: 12px !important;
+  font-style: italic;
+}

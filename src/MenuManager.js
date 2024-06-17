@@ -2,14 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { database } from "./firebase";
-import {
-  ref,
-  push,
-  onValue,
-  set,
-  remove,
-  update,
-} from "firebase/database";
+import { ref, push, onValue, set, remove, update } from "firebase/database";
 import {
   Grid,
   Typography,
@@ -40,6 +33,8 @@ const MenuManager = () => {
   const [createEditMode, setCreateEditMode] = useState("create");
   const [selectedItem, setSelectedItem] = useState({});
   const [hasOptions, setHasOptions] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("false");
   const [newItem, setNewItem] = useState({
     id: "",
     name: "",
@@ -55,7 +50,6 @@ const MenuManager = () => {
   }); //change to null
 
   useEffect(() => {
-
     document.title = "HFA UTAK CRUD MENU";
     const categoriesRef = ref(database, "categories");
     onValue(categoriesRef, (snapshot) => {
@@ -113,6 +107,8 @@ const MenuManager = () => {
       !newItem.cost ||
       !newItem.stock
     ) {
+      setIsInvalid(true);
+      setErrorMessage("Please fill out all fields");
       return;
     }
 
@@ -122,7 +118,8 @@ const MenuManager = () => {
     );
 
     if (!category) {
-      console.error("Invalid category selected");
+      setErrorMessage("Invalid category selected");
+      setIsInvalid(true);
       return;
     }
 
@@ -151,6 +148,8 @@ const MenuManager = () => {
             hasOptions: false,
           });
           setHasOptions(false);
+
+          setIsInvalid(false);
         })
         .catch((error) => console.error("Error adding menu item:", error));
     } else {
@@ -246,27 +245,6 @@ const MenuManager = () => {
 
   const handleHasOptions = (e) => {
     setHasOptions(e.target.checked);
-    // if (selectedItem) {
-    //   setSelectedItem({
-    //     ...selectedItem,
-    //     options: hasOptions
-    //       ? [
-    //           { id: "option-1", name: "Option 1" },
-    //           { id: "option-2", name: "Option 2" },
-    //         ]
-    //       : [],
-    //   });
-    // } else {
-    //   setNewItem({
-    //     ...selectedItem,
-    //     options: hasOptions
-    //       ? selectedOptions
-    //       : [],
-    //   });
-    // }
-    // const { name, value } = e.target;
-    // setHasOptions(e.target.checked);
-    // setNewItem((prev) => ({ ...prev, [name]: [] }));
   };
 
   const handleEditItemChange = (e) => {
@@ -443,6 +421,17 @@ const MenuManager = () => {
                 </FormControl>
               )}
 
+              {isInvalid && (
+                <div>
+                  <Typography
+                    className="error-message"
+                    variant="body1"
+                    sx={{ marginBottom: 2 }}
+                  >
+                    {errorMessage}
+                  </Typography>
+                </div>
+              )}
               <div className="action-buttons">
                 <Button
                   variant="contained"
@@ -548,7 +537,9 @@ const MenuManager = () => {
 
                   <Select
                     multiple
-                    value={selectedItem?.options?.map((option) => option?.name) || []}
+                    value={
+                      selectedItem?.options?.map((option) => option?.name) || []
+                    }
                     onChange={handleOptionsChange}
                     renderValue={(selected) => selected?.join(", ")}
                   >
@@ -556,7 +547,8 @@ const MenuManager = () => {
                       <MenuItem key={option.id} value={option.name}>
                         <Checkbox
                           checked={selectedItem?.options?.some(
-                            (selectedOption) => selectedOption?.id === option?.id
+                            (selectedOption) =>
+                              selectedOption?.id === option?.id
                           )}
                           onChange={() => handleToggle(option)}
                         />
