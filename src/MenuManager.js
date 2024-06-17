@@ -24,6 +24,7 @@ import "./MenuManager.css";
 //#endregion
 
 const MenuManager = () => {
+  //#region defined states
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [allOptions, setAllOptions] = useState([]);
@@ -47,7 +48,9 @@ const MenuManager = () => {
     stock: "",
     options: [],
     hasOptions: false,
-  }); //change to null
+  }); 
+
+  //#endregion
 
   useEffect(() => {
     document.title = "HFA UTAK CRUD MENU";
