@@ -25,11 +25,14 @@ body {
   border-radius: 10px;
   height: 170px;
   position: relative;
-  display: block;
-  text-align: left;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
   padding: 12px;
   border: 1px solid #ccc;
   margin-bottom: 8px;
+  text-transform: uppercase;
 }
 
 div#content {

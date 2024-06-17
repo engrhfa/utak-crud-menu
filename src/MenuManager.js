@@ -48,7 +48,7 @@ const MenuManager = () => {
     stock: "",
     options: [],
     hasOptions: false,
-  });
+  }); //change to null
 
   useEffect(() => {
     const categoriesRef = ref(database, "categories");
@@ -119,16 +119,16 @@ const MenuManager = () => {
   };
 
   const deleteItem = () => {
-    console.log('Deleting item with id:', selectedItem.id);
-  
+    console.log("Deleting item with id:", selectedItem.id);
+
     if (!selectedItem.id) {
-      console.error('Invalid itemId');
+      console.error("Invalid itemId");
       return;
     }
-  
+
     const itemRef = push(ref(database, `menuItems/${selectedItem.id}`));
-    console.log('itemRef:', itemRef);
-  
+    console.log("itemRef:", itemRef);
+
     remove(itemRef)
       .then(() => {
         console.log("Menu item deleted successfully");
@@ -142,6 +142,7 @@ const MenuManager = () => {
     console.log("selecteditem", selectedItem);
     const itemRef = ref(database, `menuItems/${selectedItem.id}`);
     console.log("itemRef", itemRef);
+    
     update(itemRef, selectedItem)
       .then(() => {
         console.log("Menu item updated successfully");
@@ -511,11 +512,11 @@ const MenuManager = () => {
                   >
                     {/* Left Column for Details */}
                     {/* <div className="details-column"> */}
-                    <div className="item-header">
-                      <Typography className="menu-item-name" variant="h6">
-                        {item.name}
-                      </Typography>
-                      <Typography id="price" className="other-details">
+                    {/* <div className="item-header"> */}
+                    <Typography className="menu-item-name" variant="h4">
+                      {item.name}
+                    </Typography>
+                    {/* <Typography id="price" className="other-details">
                         ₱{item.price}
                       </Typography>
                     </div>
@@ -527,7 +528,7 @@ const MenuManager = () => {
                     </Typography>
                     <Typography className="other-details">
                       STOCKS: {item.stock}
-                    </Typography>
+                    </Typography>*/}
                   </div>
                 </Grid>
               ))}
