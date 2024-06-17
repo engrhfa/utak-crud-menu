@@ -646,7 +646,7 @@ const MenuManager = () => {
           </Typography>
         </div>
         <Grid item xs={12} id={`content`}>
-          <Grid item xs={9} id="menuItems">
+          <Grid item md={9} xs={5} id="menuItems">
             <Grid container spacing={1}>
               {menuItems.length != 0 ? (
                 (selectedCategory === "allItems"
@@ -675,7 +675,7 @@ const MenuManager = () => {
               )}
             </Grid>
           </Grid>
-          <Grid item xs={4} lg={3} id="formSection">
+          <Grid item xs={6} md={3} id="formSection">
             <Grid container>{returnElements()}</Grid>
           </Grid>
         </Grid>

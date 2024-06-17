@@ -154,5 +154,40 @@ button#addItem {
 }
 
 .helper-div {
-  margin: 10px 0px
+  margin: 10px 0px;
+}
+
+@media only screen and (max-width: 767px) {
+  #menuItems {
+    padding-right: 0px;
+    border-right: none;
+  }
+
+  .MuiTypography-root.menu-item-name {
+    font-size: 16px !important;
+  }
+
+  .menu-item {
+    height: 50px;
+    width: 100px;
+  }
+
+  .welcome-msg {
+    width: 50%;
+    font-size: 20px !important;
+  }
+
+  button#addItem {
+    top: 3%;
+    width: 110px;
+    font-size: 7px;
+  }
+
+  .MuiTypography-root {
+    font-size: 16px !important;
+  }
+
+  #formSection {
+    padding: 0px !important
+  }
 }
