@@ -115,13 +115,9 @@ const MenuManager = () => {
     }
 
     const category = categories.find((item) => item.name === newItem.category);
-    console.log("allOptions", allOptions);
-    console.log("selectedOptions", selectedOptions);
-    console.log("newItem", newItem);
     const itemOptions = allOptions.filter((option) =>
       newItem.options.some((selectedOption) => selectedOption.id === option.id)
     );
-    console.log("itemOptions", itemOptions);
 
     if (!category) {
       console.error("Invalid category selected");
@@ -139,7 +135,6 @@ const MenuManager = () => {
       const newItemRef = push(ref(database, "menuItems"));
       set(newItemRef, newData)
         .then(() => {
-          console.log("Menu item added successfully");
           setNewItem({
             id: "",
             name: "",
@@ -168,7 +163,6 @@ const MenuManager = () => {
 
     remove(itemRef)
       .then(() => {
-        console.log("Menu item deleted successfully");
         setCreateEditMode("create");
         setSelectedItemId("");
         setSelectedItem({});
@@ -190,10 +184,7 @@ const MenuManager = () => {
 
     update(itemRef, selectedItem)
       .then(() => {
-        console.log("Menu item updated successfully");
-
         const item = returnItem("menuItems", itemKey);
-        console.log("updated Item", item);
       })
       .catch((error) => {
         console.error("Error updating menu item:", error);
@@ -234,7 +225,6 @@ const MenuManager = () => {
 
   const toggleEditMode = (itemId) => {
     const item = menuItems.find((o) => o.id === itemId);
-    console.log("item", item);
     setSelectedItem(item);
     setCreateEditMode("edit");
     setSelectedOptions(item?.options);
@@ -305,16 +295,13 @@ const MenuManager = () => {
             return { id: option.id, name: option.name };
           });
     if (selectedItem) {
-      console.log("selectedItem updatedOptions", updatedOptions);
       setSelectedItem({ ...selectedItem, options: updatedOptions });
     } else {
-      console.log("newItem updatedOptions", updatedOptions);
       setNewItem({ ...newItem, options: updatedOptions });
     }
   };
 
   const handleToggle = (option) => {
-    console.log("option", option);
     if (createEditMode == "create") {
       const currentIndex = newItem.options.findIndex(
         (item) => item.id === option.id
@@ -517,7 +504,7 @@ const MenuManager = () => {
                 size="small"
                 fullWidth
                 sx={{ marginBottom: 1 }}
-                value={selectedItem.stock}
+                value={selectedItem?.stock}
                 onChange={handleEditItemChange}
               />
               <FormControl
@@ -530,7 +517,7 @@ const MenuManager = () => {
                 <Select
                   label="Category"
                   name="category"
-                  value={selectedItem.category.name}
+                  value={selectedItem?.category?.name}
                   onChange={handleEditItemChange}
                 >
                   {categories.map((item) => (
@@ -545,7 +532,7 @@ const MenuManager = () => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      defaultChecked={selectedItem.options.length > 0}
+                      defaultChecked={selectedItem?.options?.length > 0}
                     />
                   }
                   name="hasOptions"
@@ -559,19 +546,19 @@ const MenuManager = () => {
 
                   <Select
                     multiple
-                    value={selectedItem.options.map((option) => option.name)}
+                    value={selectedItem?.options?.map((option) => option?.name) || []}
                     onChange={handleOptionsChange}
-                    renderValue={(selected) => selected.join(", ")}
+                    renderValue={(selected) => selected?.join(", ")}
                   >
                     {allOptions.map((option) => (
                       <MenuItem key={option.id} value={option.name}>
                         <Checkbox
-                          checked={selectedItem.options.some(
-                            (selectedOption) => selectedOption.id === option.id
+                          checked={selectedItem?.options?.some(
+                            (selectedOption) => selectedOption?.id === option?.id
                           )}
                           onChange={() => handleToggle(option)}
                         />
-                        <ListItemText primary={option.name} />
+                        <ListItemText primary={option?.name} />
                       </MenuItem>
                     ))}
                   </Select>
