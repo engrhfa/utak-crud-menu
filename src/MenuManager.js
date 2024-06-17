@@ -99,10 +99,26 @@ const MenuManager = () => {
 
   //#region functions
   const addItem = () => {
+    if (
+      !newItem ||
+      !newItem.name ||
+      !newItem.category ||
+      !newItem.price ||
+      !newItem.cost ||
+      !newItem.stock
+    ) {
+      //console.error("Please fill out all required fields");
+      return;
+    }
+
+    const category = categories.find((item) => item.name === newItem.category);
+
+    if (!category) {
+      console.error("Invalid category selected");
+      return;
+    }
+
     if (newItem) {
-      const category = categories.find(
-        (item) => item.name === newItem.category
-      );
       const newData = {
         ...newItem,
         id: uuidv4(),
@@ -111,7 +127,23 @@ const MenuManager = () => {
       };
       const newItemRef = push(ref(database, "menuItems"));
       set(newItemRef, newData)
-        .then(() => console.log("Menu item added successfully"))
+        .then(() => {
+          console.log("Menu item added successfully");
+          setNewItem({
+            id: "",
+            name: "",
+            category: {
+              id: "",
+              name: "",
+            },
+            price: "",
+            cost: "",
+            stock: "",
+            options: [],
+            hasOptions: false,
+          });
+          setHasOptions(false);
+        })
         .catch((error) => console.error("Error adding menu item:", error));
     } else {
       console.error("No item data provided");
@@ -119,15 +151,12 @@ const MenuManager = () => {
   };
 
   const deleteItem = () => {
-    console.log("Deleting item with id:", selectedItem.id);
-
     if (!selectedItem.id) {
       console.error("Invalid itemId");
       return;
     }
 
-    const itemRef = push(ref(database, `menuItems/${selectedItem.id}`));
-    console.log("itemRef:", itemRef);
+    const itemRef = ref(database, `menuItems/${selectedItem.id}`);
 
     remove(itemRef)
       .then(() => {
@@ -136,18 +165,39 @@ const MenuManager = () => {
       .catch((error) => {
         console.error("Error deleting menu item:", error);
       });
+
+    setCreateEditMode("create");
+    setSelectedItemId("");
+    setSelectedItem({});
   };
 
   const updateItem = () => {
-    console.log("selecteditem", selectedItem);
+    if (!selectedItem || !selectedItem.id) {
+      console.error("No valid item selected for update");
+      return;
+    }
+    const { id, ...updatedData } = Object.assign({}, selectedItem); // Remove id from updatedData
     const itemRef = ref(database, `menuItems/${selectedItem.id}`);
     console.log("itemRef", itemRef);
-    
-    update(itemRef, selectedItem)
+    console.log("itemRef", updatedData);
+    update(itemRef, updatedData)
       .then(() => {
         console.log("Menu item updated successfully");
         setSelectedItemId("");
-        setDrawerOpen(false);
+        setNewItem({
+          id: "",
+          name: "",
+          category: {
+            id: "",
+            name: "",
+          },
+          price: "",
+          cost: "",
+          stock: "",
+          options: [],
+          hasOptions: false,
+        });
+        setHasOptions(false);
       })
       .catch((error) => console.error("Error updating menu item:", error));
   };
@@ -206,7 +256,6 @@ const MenuManager = () => {
             </Typography>
             <div style={{ marginBottom: "10px" }}>
               <TextField
-                required
                 label="Name"
                 id="name"
                 name="name"
@@ -304,13 +353,16 @@ const MenuManager = () => {
                   </Select>
                 </FormControl>
               )}
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => addItem()}
-              >
-                Add item
-              </Button>
+
+              <div className="action-buttons">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => addItem()}
+                >
+                  Add item
+                </Button>
+              </div>
             </div>
           </>
         );
@@ -422,7 +474,7 @@ const MenuManager = () => {
                 </FormControl>
               )}
 
-              <div className="update-item-buttons">
+              <div className="action-buttons">
                 <Button
                   variant="contained"
                   color="primary"
@@ -499,39 +551,31 @@ const MenuManager = () => {
         <Grid item xs={12} id={`content`}>
           <Grid item xs={9} id="menuItems">
             <Grid container spacing={1}>
-              {(selectedCategory === "allItems"
-                ? menuItems
-                : menuItems.filter(
-                    (item) => item.category.name === selectedCategory
-                  )
-              ).map((item) => (
-                <Grid item key={item.id} xs={8} sm={6} md={3}>
-                  <div
-                    className="menu-item"
-                    onClick={() => toggleEditMode(item.id)}
-                  >
-                    {/* Left Column for Details */}
-                    {/* <div className="details-column"> */}
-                    {/* <div className="item-header"> */}
-                    <Typography className="menu-item-name" variant="h4">
-                      {item.name}
-                    </Typography>
-                    {/* <Typography id="price" className="other-details">
-                        ₱{item.price}
+              {menuItems.length != 0 ? (
+                (selectedCategory === "allItems"
+                  ? menuItems
+                  : menuItems.filter(
+                      (item) => item.category.name === selectedCategory
+                    )
+                ).map((item) => (
+                  <Grid item key={item.id} xs={8} sm={6} md={3}>
+                    <div
+                      className="menu-item"
+                      onClick={() => toggleEditMode(item.id)}
+                    >
+                      <Typography className="menu-item-name" variant="h4">
+                        {item.name}
                       </Typography>
                     </div>
-                    <Typography className="other-details">
-                      CATEGORY: {item.category.name}
-                    </Typography>
-                    <Typography className="other-details">
-                      COST: ₱{item.cost}
-                    </Typography>
-                    <Typography className="other-details">
-                      STOCKS: {item.stock}
-                    </Typography>*/}
-                  </div>
-                </Grid>
-              ))}
+                  </Grid>
+                ))
+              ) : (
+                <div>
+                  <Typography className="menu-item-name" variant="h6">
+                    No Available items
+                  </Typography>
+                </div>
+              )}
             </Grid>
           </Grid>
           <Grid item xs={4} lg={3} id="formSection">

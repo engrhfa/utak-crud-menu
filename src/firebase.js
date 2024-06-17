@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, push, set, remove } from 'firebase/database';
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyANSGd-W0yx3loEwgzrj0kMOQHFm516kfo",
   authDomain: "hfa-utak-test.firebaseapp.com",

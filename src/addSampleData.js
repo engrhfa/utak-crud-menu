@@ -30,42 +30,42 @@ const sampleData = {
     },
   ],
   menuItems: [
-    {
-      id: "a4d88169-6397-4f73-a2da-0afe94f1b020",
-      name: "Fries",
-      category: {
-        id: "ed093a4d-5990-46b7-a102-c686b416c353",
-        name: "Starters",
-      },
-      price: "2.99",
-      cost: "1.00",
-      stock: "50",
-      options: ["Petite", "Standard"],
-    },
-    {
-      id: "bc70cbe1-82a2-47dc-8b22-79e66d4580d7",
-      name: "Coke",
-      category: {
-        id: "c756d481-98f8-4abe-a815-3e36c05f90ea",
-        name: "Beverages",
-      },
-      price: "1.99",
-      cost: "0.50",
-      stock: "100",
-      options: ["Petite", "Standard"],
-    },
-    {
-      id: "1e303878-5ad2-41d2-81b2-cf9bf3be4e49",
-      name: "Peperroni Pizza",
-      category: {
-        id: "ed093a4d-5990-46b7-a102-c686b416c353",
-        name: "Starters",
-      },
-      price: "1.99",
-      cost: "0.50",
-      stock: "100",
-      options: ["Sharing"],
-    },
+    // {
+    //   id: "a4d88169-6397-4f73-a2da-0afe94f1b020",
+    //   name: "Fries",
+    //   category: {
+    //     id: "ed093a4d-5990-46b7-a102-c686b416c353",
+    //     name: "Starters",
+    //   },
+    //   price: "2.99",
+    //   cost: "1.00",
+    //   stock: "50",
+    //   options: ["Petite", "Standard"],
+    // },
+    // {
+    //   id: "bc70cbe1-82a2-47dc-8b22-79e66d4580d7",
+    //   name: "Coke",
+    //   category: {
+    //     id: "c756d481-98f8-4abe-a815-3e36c05f90ea",
+    //     name: "Beverages",
+    //   },
+    //   price: "1.99",
+    //   cost: "0.50",
+    //   stock: "100",
+    //   options: ["Petite", "Standard"],
+    // },
+    // {
+    //   id: "1e303878-5ad2-41d2-81b2-cf9bf3be4e49",
+    //   name: "Peperroni Pizza",
+    //   category: {
+    //     id: "ed093a4d-5990-46b7-a102-c686b416c353",
+    //     name: "Starters",
+    //   },
+    //   price: "1.99",
+    //   cost: "0.50",
+    //   stock: "100",
+    //   options: ["Sharing"],
+    // },
   ],
   options: [
     {

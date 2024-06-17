@@ -52,7 +52,7 @@ button {
   color: var(--body-text-color) !important;
 }
 
-.update-item-buttons {
+.action-buttons {
   display: flex;
   right: 2%;
   top: 75%;
