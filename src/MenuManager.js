@@ -55,6 +55,8 @@ const MenuManager = () => {
   }); //change to null
 
   useEffect(() => {
+
+    document.title = "HFA UTAK CRUD MENU";
     const categoriesRef = ref(database, "categories");
     onValue(categoriesRef, (snapshot) => {
       const categoriesData = snapshot.val();
