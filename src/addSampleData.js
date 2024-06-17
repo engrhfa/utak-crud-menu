@@ -40,7 +40,16 @@ const sampleData = {
       "price": "2.99",
       "cost": "1.00",
       "stock": "50",
-      "options": ["Petite", "Standard"]
+      "options": [
+        {
+          "id": "68ea2ae4-132b-4329-bb84-06cd37c183b5",
+          "name": "Petite"
+        },
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+      ]
     },
     {
       "id": "1e303878-5ad2-41d2-81b2-cf9bf3be4e49",
@@ -52,7 +61,16 @@ const sampleData = {
       "price": "1.99",
       "cost": "0.50",
       "stock": "100",
-      "options": ["Standard", "Sharing"]
+      "options": [
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "de3a4567-bfd4-4c2e-a71f-9dbb5bc4c8d6",
@@ -64,7 +82,16 @@ const sampleData = {
       "price": "4.99",
       "cost": "1.50",
       "stock": "60",
-      "options": ["Standard", "Sharing"]
+      "options": [
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "34d86187-c1c5-43ff-9a5e-92b68cba26f5",
@@ -76,7 +103,16 @@ const sampleData = {
       "price": "5.99",
       "cost": "2.00",
       "stock": "70",
-      "options": ["Standard", "Sharing"]
+      "options": [
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "f7d88121-6214-4f19-a1da-1aee54f4b030",
@@ -88,7 +124,16 @@ const sampleData = {
       "price": "12.99",
       "cost": "5.00",
       "stock": "40",
-      "options": ["Standard", "Sharing"]
+      "options": [
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "eb5b3f02-5db9-4b82-b5a1-34ff3ba36b2b",
@@ -100,7 +145,16 @@ const sampleData = {
       "price": "15.99",
       "cost": "6.50",
       "stock": "35",
-      "options": ["Standard", "Sharing"]
+      "options": [
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "96c2f726-0f3e-4eb5-95a6-b5b7d707ef8e",
@@ -112,7 +166,16 @@ const sampleData = {
       "price": "10.99",
       "cost": "4.00",
       "stock": "45",
-      "options": ["Standard", "Sharing"]
+      "options": [
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "e31b4d2b-faf3-45a4-a684-2c12b3ed7f68",
@@ -124,7 +187,16 @@ const sampleData = {
       "price": "8.99",
       "cost": "3.50",
       "stock": "60",
-      "options": ["Standard", "Sharing"]
+      "options": [
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "4e2a1b2f-6df8-4bfc-9d1b-5a34f0d5bf3f",
@@ -136,7 +208,16 @@ const sampleData = {
       "price": "7.99",
       "cost": "3.00",
       "stock": "55",
-      "options": ["Standard", "Sharing"]
+      "options": [
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "783b5e11-89f4-4e4e-8c1c-14d9aeb9e5e5",
@@ -148,7 +229,16 @@ const sampleData = {
       "price": "6.99",
       "cost": "2.50",
       "stock": "50",
-      "options": ["Standard", "Sharing"]
+      "options": [
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "37b1f2d9-1f9c-41e4-9e5f-2a4d0f4b5f91",
@@ -160,7 +250,16 @@ const sampleData = {
       "price": "5.99",
       "cost": "2.00",
       "stock": "30",
-      "options": ["Petite", "Standard"]
+      "options": [
+        {
+          "id": "68ea2ae4-132b-4329-bb84-06cd37c183b5",
+          "name": "Petite"
+        },
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        }
+      ]
     },
     {
       "id": "c5d2b7f0-9e42-4a9b-b8b5-8a84f3a47345",
@@ -172,7 +271,16 @@ const sampleData = {
       "price": "3.99",
       "cost": "1.50",
       "stock": "40",
-      "options": ["Petite", "Standard"]
+      "options": [
+        {
+          "id": "68ea2ae4-132b-4329-bb84-06cd37c183b5",
+          "name": "Petite"
+        },
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        }
+      ]
     },
     {
       "id": "a1d2b8f0-5e13-42f2-8b5d-8a84f3b47367",
@@ -184,7 +292,16 @@ const sampleData = {
       "price": "4.99",
       "cost": "2.00",
       "stock": "35",
-      "options": ["Petite", "Standard"]
+      "options": [
+        {
+          "id": "68ea2ae4-132b-4329-bb84-06cd37c183b5",
+          "name": "Petite"
+        },
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "21fbd8b4-2cd9-41d4-8b78-8d832ef3f5d7",
@@ -196,7 +313,12 @@ const sampleData = {
       "price": "4.99",
       "cost": "1.50",
       "stock": "50",
-      "options": ["Sharing"]
+      "options": [
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "a32fdd61-4f27-4b22-8b21-8c11ed5b458d",
@@ -208,7 +330,12 @@ const sampleData = {
       "price": "2.99",
       "cost": "1.00",
       "stock": "40",
-      "options": ["Sharing"]
+      "options": [
+        {
+          "id": "0d3baced-d7cf-4a1d-a17b-d3e459121766",
+          "name": "Sharing"
+        },
+      ]
     },
     {
       "id": "51dc6b7d-3f19-4e7e-9c7c-6d841eb4d4c3",
@@ -220,7 +347,16 @@ const sampleData = {
       "price": "3.99",
       "cost": "1.20",
       "stock": "45",
-      "options": ["Petite", "Sharing"]
+      "options": [
+        {
+          "id": "68ea2ae4-132b-4329-bb84-06cd37c183b5",
+          "name": "Petite"
+        },
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+      ]
     },
     {
       "id": "bc70cbe1-82a2-47dc-8b22-79e66d4580d7",
@@ -232,7 +368,16 @@ const sampleData = {
       "price": "1.99",
       "cost": "0.50",
       "stock": "100",
-      "options": ["Petite", "Standard"]
+      "options": [
+        {
+          "id": "68ea2ae4-132b-4329-bb84-06cd37c183b5",
+          "name": "Petite"
+        },
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+      ]
     },
     {
       "id": "f62b7c5d-4d1d-41f8-8b24-8c23a4c5d673",
@@ -244,7 +389,16 @@ const sampleData = {
       "price": "2.49",
       "cost": "0.60",
       "stock": "90",
-      "options": ["Petite", "Standard"]
+      "options": [
+        {
+          "id": "68ea2ae4-132b-4329-bb84-06cd37c183b5",
+          "name": "Petite"
+        },
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+      ]
     },
     {
       "id": "ec31b67a-4d71-4f6b-8b25-8d33b4f7c578",
@@ -256,7 +410,16 @@ const sampleData = {
       "price": "1.99",
       "cost": "0.40",
       "stock": "80",
-      "options": ["Petite", "Standard"]
+      "options": [
+        {
+          "id": "68ea2ae4-132b-4329-bb84-06cd37c183b5",
+          "name": "Petite"
+        },
+        {
+          "id": "94b55c2f-285e-469b-8e0f-9b6569b2c144",
+          "name": "Standard"
+        },
+      ]
     }
   ],
   "options": [

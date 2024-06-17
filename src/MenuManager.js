@@ -1,3 +1,5 @@
+//#region import declarations
+
 import React, { useState, useEffect } from "react";
 import { database } from "./firebase";
 import {
@@ -7,8 +9,6 @@ import {
   set,
   remove,
   update,
-  child,
-  get,
 } from "firebase/database";
 import {
   Grid,
@@ -17,8 +17,6 @@ import {
   TextField,
   Tabs,
   Tab,
-  Drawer,
-  IconButton,
   FormControl,
   MenuItem,
   InputLabel,
@@ -26,22 +24,19 @@ import {
   Checkbox,
   FormGroup,
   FormControlLabel,
-  OutlinedInput,
   ListItemText,
-  FormHelperText,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditNoteIcon from "@mui/icons-material/EditNote";
 import { v4 as uuidv4 } from "uuid";
 import "./MenuManager.css";
+//#endregion
 
 const MenuManager = () => {
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const [allOptions, setAllOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("allItems");
   const [selectedItemId, setSelectedItemId] = useState("");
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [createEditMode, setCreateEditMode] = useState("create");
   const [selectedItem, setSelectedItem] = useState({});
   const [hasOptions, setHasOptions] = useState(false);
@@ -99,9 +94,9 @@ const MenuManager = () => {
           id: key,
           ...optionsData[key],
         }));
-        setSelectedOptions(optionsArray);
+        setAllOptions(optionsArray);
       } else {
-        setSelectedOptions([]);
+        setAllOptions([]);
       }
     });
   }, []);
@@ -116,11 +111,17 @@ const MenuManager = () => {
       !newItem.cost ||
       !newItem.stock
     ) {
-      //console.error("Please fill out all required fields");
       return;
     }
 
     const category = categories.find((item) => item.name === newItem.category);
+    console.log("allOptions", allOptions);
+    console.log("selectedOptions", selectedOptions);
+    console.log("newItem", newItem);
+    const itemOptions = allOptions.filter((option) =>
+      newItem.options.some((selectedOption) => selectedOption.id === option.id)
+    );
+    console.log("itemOptions", itemOptions);
 
     if (!category) {
       console.error("Invalid category selected");
@@ -133,6 +134,7 @@ const MenuManager = () => {
         id: uuidv4(),
         category: category,
         hasOptions: hasOptions,
+        options: itemOptions,
       };
       const newItemRef = push(ref(database, "menuItems"));
       set(newItemRef, newData)
@@ -232,19 +234,18 @@ const MenuManager = () => {
 
   const toggleEditMode = (itemId) => {
     const item = menuItems.find((o) => o.id === itemId);
+    console.log("item", item);
     setSelectedItem(item);
     setCreateEditMode("edit");
-    //setDrawerOpen(true);
-  };
-
-  const closeDrawer = () => {
-    setDrawerOpen(false);
-    setSelectedItemId("");
-    setCreateEditMode("create");
+    setSelectedOptions(item?.options);
+    setHasOptions(item?.options?.length != 0);
   };
 
   const handleAddItemChange = (e) => {
     const { name, value } = e.target;
+    if (name === "options") {
+      setSelectedOptions([]);
+    }
     setNewItem((prev) => ({
       ...prev,
       [name]: value,
@@ -252,9 +253,28 @@ const MenuManager = () => {
   };
 
   const handleHasOptions = (e) => {
-    const { name, value } = e.target;
     setHasOptions(e.target.checked);
-    setNewItem((prev) => ({ ...prev, [name]: [] }));
+    // if (selectedItem) {
+    //   setSelectedItem({
+    //     ...selectedItem,
+    //     options: hasOptions
+    //       ? [
+    //           { id: "option-1", name: "Option 1" },
+    //           { id: "option-2", name: "Option 2" },
+    //         ]
+    //       : [],
+    //   });
+    // } else {
+    //   setNewItem({
+    //     ...selectedItem,
+    //     options: hasOptions
+    //       ? selectedOptions
+    //       : [],
+    //   });
+    // }
+    // const { name, value } = e.target;
+    // setHasOptions(e.target.checked);
+    // setNewItem((prev) => ({ ...prev, [name]: [] }));
   };
 
   const handleEditItemChange = (e) => {
@@ -273,13 +293,56 @@ const MenuManager = () => {
     const {
       target: { value },
     } = event;
-    setNewItem({
-      ...newItem,
-      options: typeof value === "string" ? value.split(",") : value,
-    });
+
+    const updatedOptions =
+      typeof value === "string"
+        ? value.split(",").map((name) => {
+            const option = allOptions.find((option) => option.name === name);
+            return { id: option.id, name: option.name };
+          })
+        : value.map((name) => {
+            const option = allOptions.find((option) => option.name === name);
+            return { id: option.id, name: option.name };
+          });
+    if (selectedItem) {
+      console.log("selectedItem updatedOptions", updatedOptions);
+      setSelectedItem({ ...selectedItem, options: updatedOptions });
+    } else {
+      console.log("newItem updatedOptions", updatedOptions);
+      setNewItem({ ...newItem, options: updatedOptions });
+    }
   };
 
-  console.log('SelectedItem', selectedItem)
+  const handleToggle = (option) => {
+    console.log("option", option);
+    if (createEditMode == "create") {
+      const currentIndex = newItem.options.findIndex(
+        (item) => item.id === option.id
+      );
+      const newChecked = [...newItem.options];
+
+      if (currentIndex === -1) {
+        newChecked.push(option);
+      } else {
+        newChecked.splice(currentIndex, 1);
+      }
+
+      setNewItem({ ...newItem, options: newChecked });
+    } else {
+      const currentIndex = selectedItem.options.findIndex(
+        (item) => item.id === option.id
+      );
+      const newChecked = [...selectedItem.options];
+
+      if (currentIndex === -1) {
+        newChecked.push(option);
+      } else {
+        newChecked.splice(currentIndex, 1);
+      }
+
+      setSelectedItem({ ...selectedItem, options: newChecked });
+    }
+  };
 
   const returnElements = () => {
     let elements;
@@ -359,29 +422,30 @@ const MenuManager = () => {
               {/* Options section */}
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox value={hasOptions} />}
+                  name="hasOptions"
+                  control={
+                    <Checkbox defaultChecked={newItem.options.length > 0} />
+                  }
                   label="Includes options"
                   onChange={handleHasOptions}
-                  name="hasOptions"
                 />
               </FormGroup>
               {hasOptions && (
                 <FormControl sx={{ m: 1, width: 300 }}>
                   <InputLabel id="options-label">Options</InputLabel>
                   <Select
-                    labelId="optons-label"
-                    id="options"
                     multiple
-                    value={newItem.options}
+                    value={newItem.options.map((option) => option.name)}
                     onChange={handleOptionsChange}
-                    input={<OutlinedInput label="Options" />}
                     renderValue={(selected) => selected.join(", ")}
-                    // MenuProps={MenuProps}
                   >
-                    {selectedOptions.map((option) => (
+                    {allOptions.map((option) => (
                       <MenuItem key={option.id} value={option.name}>
                         <Checkbox
-                          checked={newItem.options.indexOf(option.name) > -1}
+                          checked={newItem.options.some(
+                            (selectedOption) => selectedOption.id === option.id
+                          )}
+                          onChange={() => handleToggle(option)}
                         />
                         <ListItemText primary={option.name} />
                       </MenuItem>
@@ -479,29 +543,33 @@ const MenuManager = () => {
               {/* Options section */}
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox value={hasOptions} />}
+                  control={
+                    <Checkbox
+                      defaultChecked={selectedItem.options.length > 0}
+                    />
+                  }
+                  name="hasOptions"
                   label="Includes options"
                   onChange={handleHasOptions}
-                  value={selectedItem.hasOptions}
                 />
               </FormGroup>
               {hasOptions && (
                 <FormControl sx={{ m: 1, width: 300 }}>
                   <InputLabel id="options-label">Options</InputLabel>
+
                   <Select
-                    labelId="optons-label"
-                    id="options"
                     multiple
-                    value={newItem.options}
+                    value={selectedItem.options.map((option) => option.name)}
                     onChange={handleOptionsChange}
-                    input={<OutlinedInput label="Options" />}
                     renderValue={(selected) => selected.join(", ")}
-                    // MenuProps={MenuProps}
                   >
-                    {selectedOptions.map((option) => (
+                    {allOptions.map((option) => (
                       <MenuItem key={option.id} value={option.name}>
                         <Checkbox
-                          checked={newItem.options.indexOf(option.name) > -1}
+                          checked={selectedItem.options.some(
+                            (selectedOption) => selectedOption.id === option.id
+                          )}
+                          onChange={() => handleToggle(option)}
                         />
                         <ListItemText primary={option.name} />
                       </MenuItem>
@@ -619,12 +687,6 @@ const MenuManager = () => {
           </Grid>
         </Grid>
       </Grid>
-
-      <Drawer anchor="right" open={drawerOpen} onClose={closeDrawer}>
-        <div style={{ width: "300px", padding: "20px" }}>
-          {returnElements()}
-        </div>
-      </Drawer>
     </Grid>
   );
 };
