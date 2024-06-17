@@ -642,7 +642,7 @@ const MenuManager = () => {
             variant="h5"
             sx={{ marginBottom: 2 }}
           >
-            Note: Click of the menu item to edit
+            Note: Click of the menu item to update menu item
           </Typography>
         </div>
         <Grid item xs={12} id={`content`}>
