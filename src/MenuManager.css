@@ -145,3 +145,14 @@ button#addItem {
   font-size: 12px !important;
   font-style: italic;
 }
+
+.helper-message {
+  color: var(--body-text-color);
+  text-align: left;
+  font-size: 14px !important;
+  font-style: italic;
+}
+
+.helper-div {
+  margin: 10px 0px
+}

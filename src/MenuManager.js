@@ -48,7 +48,7 @@ const MenuManager = () => {
     stock: "",
     options: [],
     hasOptions: false,
-  }); 
+  });
 
   //#endregion
 
@@ -636,6 +636,15 @@ const MenuManager = () => {
             ))}
           </Tabs>
         </Grid>
+        <div className="helper-div">
+          <Typography
+            className="helper-message"
+            variant="h5"
+            sx={{ marginBottom: 2 }}
+          >
+            Note: Click of the menu item to edit
+          </Typography>
+        </div>
         <Grid item xs={12} id={`content`}>
           <Grid item xs={9} id="menuItems">
             <Grid container spacing={1}>
