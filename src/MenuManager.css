@@ -1,0 +1,137 @@
+:root {
+  --tab-text-color: #f9faf5;
+  --tab-bg-color: #209ebb;
+  --body-text-color: #023047;
+  --menu-bg-color: #f5f4e9;
+}
+
+body {
+  color: var(--body-text-color);
+  font-family: "Segoe UI";
+}
+
+.menu-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.menu-item {
+  border: 1px solid var(--tab-text-color);
+  padding: 10px;
+  background-color: var(--tab-text-color);
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1),
+    -3px -3px 8px rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  height: 170px;
+  position: relative;
+  display: block;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
+div#content {
+  display: flex !important;
+  height: 80vh;
+  margin-top: 20px;
+}
+
+button.Mui-selected,
+button:focus {
+  background-color: var(--tab-bg-color) !important;
+  color: var(--tab-text-color) !important;
+  border-radius: 25px;
+}
+
+button {
+  color: var(--body-text-color) !important;
+}
+
+.update-item-buttons {
+  display: flex;
+  right: 2%;
+  top: 75%;
+  justify-content: end;
+}
+
+button.MuiButtonBase-root.MuiButton-root {
+  background-color: transparent;
+  color: var(--bg-text-color) !important;
+  border-radius: 25px !important;
+  position: relative;
+}
+
+.MuiTabs-indicator {
+  display: none !important;
+}
+
+#tabs {
+  margin-top: 10px;
+}
+
+div#formSection {
+  padding: 0px 40px;
+}
+
+.MuiTypography-root.MuiTypography-h6.menu-item-name {
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.MuiTypography-root.other-details {
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.details-column {
+  text-align: left;
+  position: absolute;
+  top: 15px;
+}
+
+.icons-column {
+  position: absolute;
+  width: 60px;
+  top: 10px;
+  right: 5px;
+  margin-right: 10%;
+}
+
+.item-header {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+#price {
+  position: absolute !important;
+  right: 20px;
+  text-align: right !important;
+}
+
+.welcome-msg {
+  font-family: "Segoe UI", Arial, sans-serif !important;
+  text-align: left;
+  font-weight: 600 !important;
+}
+
+#menuItems {
+  border-right: 2px solid rgba(2, 48, 71, 0.1);
+  padding-right: 21px;
+}
+
+#header {
+  display: flex;
+}
+
+button#addItem {
+  right: 3% !important;
+  position: absolute;
+  color: var(--tab-text-color) !important;
+  background-color: #23aa8f !important;
+  top: 11%;
+  z-index: 2;
+}
+
+.update-item-header {
+  display: flex;
+}
