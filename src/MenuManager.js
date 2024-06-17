@@ -189,8 +189,9 @@ const MenuManager = () => {
     update(itemRef, selectedItem)
       .then(() => {
         console.log("Menu item updated successfully");
-        setSelectedItem(""); // Resetting selectedItem state after update
-        setDrawerOpen(false); // Closing drawer or modal after update
+
+        const item = returnItem("menuItems", itemKey);
+        console.log("updated Item", item);
       })
       .catch((error) => {
         console.error("Error updating menu item:", error);
@@ -213,6 +214,22 @@ const MenuManager = () => {
     return itemKey;
   };
 
+  const returnItem = (table, itemKey) => {
+    const tableRef = ref(database, table);
+    let item;
+
+    //get item
+    onValue(tableRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        item = data[itemKey];
+      } else {
+      }
+    });
+
+    return item;
+  };
+
   const toggleEditMode = (itemId) => {
     const item = menuItems.find((o) => o.id === itemId);
     setSelectedItem(item);
@@ -228,7 +245,6 @@ const MenuManager = () => {
 
   const handleAddItemChange = (e) => {
     const { name, value } = e.target;
-    console.log("name", name);
     setNewItem((prev) => ({
       ...prev,
       [name]: value,
@@ -243,7 +259,14 @@ const MenuManager = () => {
 
   const handleEditItemChange = (e) => {
     const { name, value } = e.target;
-    setSelectedItem((prev) => ({ ...prev, [name]: value }));
+    let category;
+    if (name === "category") {
+      category = categories.find((item) => item.name === value);
+    }
+    setSelectedItem((prev) => ({
+      ...prev,
+      [name]: name === "category" ? category : value,
+    }));
   };
 
   const handleOptionsChange = (event) => {
@@ -255,6 +278,8 @@ const MenuManager = () => {
       options: typeof value === "string" ? value.split(",") : value,
     });
   };
+
+  console.log('SelectedItem', selectedItem)
 
   const returnElements = () => {
     let elements;
@@ -520,7 +545,7 @@ const MenuManager = () => {
       <Grid item xs={12}>
         <Grid item xs={12} id="header">
           <Typography className="welcome-msg" variant="h4">
-            Welcome, UserXXX!
+            Welcome, User!
           </Typography>
           {createEditMode != "create" && (
             <Button
