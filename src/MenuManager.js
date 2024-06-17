@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { database } from "./firebase";
-import { ref, push, onValue, set, remove } from "firebase/database";
+import { ref, push, onValue, set, remove, update } from "firebase/database";
 import {
   Grid,
   Typography,
@@ -19,6 +19,7 @@ import {
   FormControlLabel,
   OutlinedInput,
   ListItemText,
+  FormHelperText,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -46,6 +47,7 @@ const MenuManager = () => {
     cost: "",
     stock: "",
     options: [],
+    hasOptions: false,
   });
 
   useEffect(() => {
@@ -96,10 +98,19 @@ const MenuManager = () => {
   }, []);
 
   //#region functions
-  const addItem = (item) => {
-    if (item) {
+  const addItem = () => {
+    if (newItem) {
+      const category = categories.find(
+        (item) => item.name === newItem.category
+      );
+      const newData = {
+        ...newItem,
+        id: uuidv4(),
+        category: category,
+        hasOptions: hasOptions,
+      };
       const newItemRef = push(ref(database, "menuItems"));
-      set(newItemRef, item)
+      set(newItemRef, newData)
         .then(() => console.log("Menu item added successfully"))
         .catch((error) => console.error("Error adding menu item:", error));
     } else {
@@ -107,16 +118,31 @@ const MenuManager = () => {
     }
   };
 
-  const deleteItem = (itemId) => {
-    const itemRef = ref(database, `menuItems/${itemId}`);
+  const deleteItem = () => {
+    console.log('Deleting item with id:', selectedItem.id);
+  
+    if (!selectedItem.id) {
+      console.error('Invalid itemId');
+      return;
+    }
+  
+    const itemRef = push(ref(database, `menuItems/${selectedItem.id}`));
+    console.log('itemRef:', itemRef);
+  
     remove(itemRef)
-      .then(() => console.log("Menu item deleted successfully"))
-      .catch((error) => console.error("Error deleting menu item:", error));
+      .then(() => {
+        console.log("Menu item deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Error deleting menu item:", error);
+      });
   };
 
-  const updateItem = (itemId, newData) => {
-    const itemRef = ref(database, `menuItems/${itemId}`);
-    set(itemRef, newData)
+  const updateItem = () => {
+    console.log("selecteditem", selectedItem);
+    const itemRef = ref(database, `menuItems/${selectedItem.id}`);
+    console.log("itemRef", itemRef);
+    update(itemRef, selectedItem)
       .then(() => {
         console.log("Menu item updated successfully");
         setSelectedItemId("");
@@ -140,11 +166,17 @@ const MenuManager = () => {
 
   const handleAddItemChange = (e) => {
     const { name, value } = e.target;
-    setNewItem((prev) => ({ ...prev, [name]: value }));
+    console.log("name", name);
+    setNewItem((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleHasOptions = (e) => {
+    const { name, value } = e.target;
     setHasOptions(e.target.checked);
+    setNewItem((prev) => ({ ...prev, [name]: [] }));
   };
 
   const handleEditItemChange = (e) => {
@@ -164,7 +196,6 @@ const MenuManager = () => {
 
   const returnElements = () => {
     let elements;
-
     switch (createEditMode) {
       case "create":
         elements = (
@@ -224,15 +255,16 @@ const MenuManager = () => {
                 size="small"
                 sx={{ marginBottom: 1 }}
               >
-                <InputLabel>Category</InputLabel>
+                <InputLabel id="category-label">Category</InputLabel>
                 <Select
+                  labelId="category-label"
                   label="Category"
                   name="category"
                   value={newItem.category}
                   onChange={handleAddItemChange}
                 >
                   {categories.map((item) => (
-                    <MenuItem id={item.id} value={item.name}>
+                    <MenuItem key={item.id} id={item.id} value={item.name}>
                       {item.name}
                     </MenuItem>
                   ))}
@@ -244,6 +276,7 @@ const MenuManager = () => {
                   control={<Checkbox value={hasOptions} />}
                   label="Includes options"
                   onChange={handleHasOptions}
+                  name="hasOptions"
                 />
               </FormGroup>
               {hasOptions && (
@@ -273,7 +306,7 @@ const MenuManager = () => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => addItem(newItem)}
+                onClick={() => addItem()}
               >
                 Add item
               </Button>
@@ -298,8 +331,8 @@ const MenuManager = () => {
                 size="small"
                 fullWidth
                 sx={{ marginBottom: 1 }}
-                value={newItem.name}
-                onChange={handleAddItemChange}
+                value={selectedItem.name}
+                onChange={handleEditItemChange}
               />
               <TextField
                 label="Price"
@@ -309,8 +342,8 @@ const MenuManager = () => {
                 size="small"
                 fullWidth
                 sx={{ marginBottom: 1 }}
-                value={newItem.price}
-                onChange={handleAddItemChange}
+                value={selectedItem.price}
+                onChange={handleEditItemChange}
               />
               <TextField
                 label="Cost"
@@ -320,8 +353,8 @@ const MenuManager = () => {
                 size="small"
                 fullWidth
                 sx={{ marginBottom: 1 }}
-                value={newItem.cost}
-                onChange={handleAddItemChange}
+                value={selectedItem.cost}
+                onChange={handleEditItemChange}
               />
               <TextField
                 label="Amount in Stock"
@@ -331,8 +364,8 @@ const MenuManager = () => {
                 size="small"
                 fullWidth
                 sx={{ marginBottom: 1 }}
-                value={newItem.stock}
-                onChange={handleAddItemChange}
+                value={selectedItem.stock}
+                onChange={handleEditItemChange}
               />
               <FormControl
                 fullWidth
@@ -344,11 +377,11 @@ const MenuManager = () => {
                 <Select
                   label="Category"
                   name="category"
-                  value={newItem.category}
-                  onChange={handleAddItemChange}
+                  value={selectedItem.category.name}
+                  onChange={handleEditItemChange}
                 >
                   {categories.map((item) => (
-                    <MenuItem id={item.id} value={item.name}>
+                    <MenuItem key={item.id} id={item.id} value={item.name}>
                       {item.name}
                     </MenuItem>
                   ))}
@@ -360,6 +393,7 @@ const MenuManager = () => {
                   control={<Checkbox value={hasOptions} />}
                   label="Includes options"
                   onChange={handleHasOptions}
+                  value={selectedItem.hasOptions}
                 />
               </FormGroup>
               {hasOptions && (
@@ -391,7 +425,7 @@ const MenuManager = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => updateItem(selectedItem.id)}
+                  onClick={() => updateItem()}
                 >
                   Update item
                 </Button>
@@ -399,7 +433,7 @@ const MenuManager = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => deleteItem(selectedItem.id)}
+                  onClick={() => deleteItem()}
                 >
                   Delete Item
                 </Button>
@@ -477,14 +511,14 @@ const MenuManager = () => {
                   >
                     {/* Left Column for Details */}
                     {/* <div className="details-column"> */}
-                    <row className="item-header">
+                    <div className="item-header">
                       <Typography className="menu-item-name" variant="h6">
                         {item.name}
                       </Typography>
                       <Typography id="price" className="other-details">
                         ₱{item.price}
                       </Typography>
-                    </row>
+                    </div>
                     <Typography className="other-details">
                       CATEGORY: {item.category.name}
                     </Typography>
@@ -494,26 +528,6 @@ const MenuManager = () => {
                     <Typography className="other-details">
                       STOCKS: {item.stock}
                     </Typography>
-                    {/* </div> */}
-
-                    {/* Right Column for Icons (Top Left)
-                    <div className="icons-column">
-                      <IconButton
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => toggleEditMode(item.id)}
-                        style={{ position: "absolute", top: 0, left: 0 }}
-                      >
-                        <EditNoteIcon fontSize="inherit" color="info" />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => deleteItem(item.id)}
-                        style={{ position: "absolute", top: 0, left: "40px" }}
-                      >
-                        <DeleteIcon fontSize="inherit" color="error" />
-                      </IconButton>
-                    </div> */}
                   </div>
                 </Grid>
               ))}
